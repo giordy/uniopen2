@@ -1,0 +1,27 @@
+version: '3'
+
+services:
+
+  uniopen-redis:
+    image: redis:4.0-alpine
+    restart: always
+
+  uniopen-mongodb:
+    image: mongo:3.6
+    restart: always
+    volumes:
+      - uniopen-mongodb:/data/db
+
+  uniopen:
+    build: .
+    restart: always
+    ports:
+      - "5000:5000"
+    depends_on:
+      - uniopen-redis
+      - uniopen-mongodb
+
+volumes:
+
+  uniopen-mongodb:
+    external: true
